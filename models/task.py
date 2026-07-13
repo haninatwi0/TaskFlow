@@ -1,3 +1,4 @@
+from datetime import datetime
 from models.user import db
 
 
@@ -9,7 +10,7 @@ class Task(db.Model):
     )
 
     title = db.Column(
-        db.String(200),
+        db.String(100),
         nullable=False
     )
 
@@ -22,7 +23,23 @@ class Task(db.Model):
         default=False
     )
 
+    created_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow
+    )
+
+    due_date = db.Column(
+        db.Date
+    )
+    
+    priority = db.Column(
+    db.String(20),
+    default="Medium"
+    )
+
+    # Connection with User
     user_id = db.Column(
         db.Integer,
-        db.ForeignKey("user.id")
+        db.ForeignKey("user.id"),
+        nullable=False
     )

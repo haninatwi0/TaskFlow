@@ -1,11 +1,19 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, flash 
 from werkzeug.security import generate_password_hash, check_password_hash
+from models import user
 from models.user import db, User
 from sqlalchemy.exc import IntegrityError
 from models.task import Task
 
+import os
+from dotenv import load_dotenv
+
+from datetime import datetime
+
 app = Flask(__name__)
-app.secret_key = "your-secret-key"
+load_dotenv()
+
+app.secret_key = os.getenv("SECRET_KEY")
 
 # Database configuration
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///taskflow.db"
@@ -30,11 +38,20 @@ def login():
 
         user = User.query.filter_by(email=email).first()
 
-        if user and check_password_hash(user.password, password):
-            session["user_id"] = user.id
-            return redirect("/dashboard")
+        if not user:
+            flash("Invalid email or password.", "error")
+            return redirect("/login")
 
-        return "Invalid email or password!"
+        if not check_password_hash(user.password, password):
+            flash("Invalid email or password.", "error")
+            return redirect("/login")
+
+        session["user_id"] = user.id
+
+        flash(f"Welcome back, {user.name}!", "success")
+
+        return redirect("/dashboard")
+
 
     return render_template("login.html")
 
@@ -42,9 +59,15 @@ def login():
 def dashboard():
 
     if "user_id" not in session:
+        flash("Please login first.", "error")
         return redirect("/login")
 
     user = User.query.get(session["user_id"])
+
+    if not user:
+        session.clear()
+        flash("Please login again.", "error")
+        return redirect("/login")
 
     return render_template(
         "dashboard.html",
@@ -62,11 +85,14 @@ def register():
         email = request.form["email"]
         password = generate_password_hash(request.form["password"])
 
+        # Check if email already exists
         existing_user = User.query.filter_by(email=email).first()
 
         if existing_user:
-            return "Email already registered!"
+            flash("Email is already registered.", "error")
+            return redirect("/register")
 
+        # Create the new user
         new_user = User(
             name=name,
             email=email,
@@ -76,29 +102,45 @@ def register():
         db.session.add(new_user)
         db.session.commit()
 
+        flash("Account created successfully! Please log in.", "success")
         return redirect("/login")
 
     return render_template("register.html")
+
 
 @app.route("/add-task", methods=["POST"])
 def add_task():
 
     if "user_id" not in session:
+        flash("Please login first.", "error")
         return redirect("/login")
 
 
     title = request.form["title"]
     description = request.form["description"]
+    due_date = request.form["due_date"]
+    user_id = session["user_id"]
+    priority = request.form["priority"]
 
+    new_task = Task(
 
-    task = Task(
         title=title,
+
         description=description,
-        user_id=session["user_id"]
+
+        due_date=datetime.strptime(
+            due_date,
+            "%Y-%m-%d"
+        ).date(),
+        
+        priority=priority,
+        
+        user_id=user_id
+
     )
 
 
-    db.session.add(task)
+    db.session.add(new_task)
     db.session.commit()
 
 
@@ -107,7 +149,10 @@ def add_task():
 
 @app.route("/complete/<int:id>")
 def complete_task(id):
-
+    if "user_id" not in session:
+        flash("Please login first.", "error")
+        return redirect("/login")
+    
     task = Task.query.get(id)
 
     task.completed = True
@@ -119,6 +164,10 @@ def complete_task(id):
 
 @app.route("/delete/<int:id>")
 def delete_task(id):
+
+    if "user_id" not in session:
+        flash("Please login first.", "error")
+        return redirect("/login")
 
     task = Task.query.get(id)
 
@@ -132,7 +181,9 @@ def delete_task(id):
 @app.route("/logout")
 def logout():
 
-    session.pop("user_id", None)
+    session.clear()
+
+    flash("You have been logged out.", "success")
 
     return redirect("/login")
 

@@ -6,87 +6,208 @@ Dashboard
 
 {% block content %}
 
-<h1>Welcome, {{ user.name }} 👋</h1>
+<!-- Welcome Card -->
+<div class="welcome-card">
 
-<p>
-    You are logged in with:
-    {{ user.email }}
-</p>
-
-
-<h2>Create Task</h2>
-
-<form action="/add-task" method="POST">
-
-    <input
-        type="text"
-        name="title"
-        placeholder="Task title"
-        required
-    >
-
-    <textarea
-        name="description"
-        placeholder="Description"
-    ></textarea>
-
-    <button type="submit">
-        Add Task
-    </button>
-
-</form>
-
-
-<h2>Your Tasks</h2>
-
-{% if tasks %}
-
-    {% for task in tasks %}
-
-    <div>
-
-        <h3>
-            {{ task.title }}
-        </h3>
-
-        <p>
-            {{ task.description }}
-        </p>
-
-        <p>
-            Status:
-            {% if task.completed %}
-                Completed ✅
-            {% else %}
-                Pending ⏳
-            {% endif %}
-        </p>
-
-
-        {% if not task.completed %}
-        <a href="/complete/{{ task.id }}">
-            Complete
-        </a>
-        {% endif %}
-
-
-        <a href="/delete/{{ task.id }}">
-            Delete
-        </a>
-
-    </div>
-
-    <hr>
-
-    {% endfor %}
-
-{% else %}
+    <h1>Welcome, {{ user.name }} 👋</h1>
 
     <p>
-        No tasks yet. Create your first task!
+        Logged in as <strong>{{ user.email }}</strong>
     </p>
 
-{% endif %}
+</div>
 
+
+<!-- Statistics -->
+<div class="stats-container">
+
+    <div class="stat-card">
+        <h3>Total Tasks</h3>
+        <p>{{ tasks|length }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Completed</h3>
+        <p>
+            {{ tasks|selectattr('completed', 'equalto', True)|list|length }}
+        </p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Pending</h3>
+        <p>
+            {{ tasks|selectattr('completed', 'equalto', False)|list|length }}
+        </p>
+    </div>
+
+</div>
+
+
+<!-- Create Task -->
+<div class="task-form">
+
+    <h2>Create New Task</h2>
+
+    <form action="/add-task" method="POST">
+
+        <label for="title">Task Title</label>
+
+        <input
+            type="text"
+            id="title"
+            name="title"
+            placeholder="Enter your task..."
+            required
+        >
+
+        <label for="description">Description</label>
+
+        <textarea
+            id="description"
+            name="description"
+            placeholder="Write a short description..."
+            rows="5"
+        ></textarea>
+
+        <label for="due_date">
+            Due Date
+        </label>
+
+        <input
+            type="date"
+            id="due_date"
+            name="due_date">
+
+        <label for="priority">
+            Priority
+        </label>
+
+
+        <select name="priority" id="priority">
+
+            <option value="High">
+                🔴 High
+            </option>
+
+
+            <option value="Medium" selected>
+                🟡 Medium
+            </option>
+
+
+            <option value="Low">
+                🟢 Low
+            </option>
+
+        </select>
+
+        <button type="submit">
+            Add Task
+        </button>
+
+    </form>
+
+</div>
+
+
+<!-- Tasks -->
+<div class="tasks-section">
+
+    <h2>Your Tasks</h2>
+
+    {% if tasks %}
+
+        {% for task in tasks %}
+
+        <div class="task-card">
+
+            <h3>{{ task.title }}</h3>
+
+            <p>{{ task.description }}</p>
+            
+            <p>
+                📅 Due:
+
+                {% if task.due_date %}
+
+                    {{ task.due_date.strftime('%d/%m/%Y') }}
+
+                {% else %}
+
+                    No date set
+
+                {% endif %}
+            <p>
+                Priority:
+
+                {% if task.priority == "High" %}
+
+                    🔴 High
+
+                {% elif task.priority == "Medium" %}
+
+                    🟡 Medium
+
+                {% else %}
+
+                    🟢 Low
+
+                {% endif %}
+
+            </p>
+
+            
+            </p>
+            {% if task.completed %}
+
+                <span class="status completed">
+                    ✅ Completed
+                </span>
+
+            {% else %}
+
+                <span class="status pending">
+                    ⏳ Pending
+                </span>
+
+            {% endif %}
+
+            <div class="task-buttons">
+
+                {% if not task.completed %}
+
+                <a class="complete-btn"
+                   href="/complete/{{ task.id }}">
+                    Complete
+                </a>
+
+                {% endif %}
+
+                <a class="delete-btn"
+                   href="/delete/{{ task.id }}">
+                    Delete
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty-state">
+
+            <h3>📝 No Tasks Yet</h3>
+
+            <p>
+                Create your first task to get started.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
 
 {% endblock %}

@@ -6,11 +6,12 @@ venv/
 
 # Python cache
 __pycache__/
+**/__pycache__/
 *.pyc
 
 # Database
 instance/
 *.db
 
-# VS Code (optional)
+# VS Code 
 .vscode/

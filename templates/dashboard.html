@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+<h1>Welcome, {{ user.name }} 👋</h1>
+
+<p>
+    You are logged in with:
+    {{ user.email }}
+</p>
+
+
+<h2>Create Task</h2>
+
+<form action="/add-task" method="POST">
+
+    <input
+        type="text"
+        name="title"
+        placeholder="Task title"
+        required
+    >
+
+    <textarea
+        name="description"
+        placeholder="Description"
+    ></textarea>
+
+    <button type="submit">
+        Add Task
+    </button>
+
+</form>
+
+
+<h2>Your Tasks</h2>
+
+{% if tasks %}
+
+    {% for task in tasks %}
+
+    <div>
+
+        <h3>
+            {{ task.title }}
+        </h3>
+
+        <p>
+            {{ task.description }}
+        </p>
+
+        <p>
+            Status:
+            {% if task.completed %}
+                Completed ✅
+            {% else %}
+                Pending ⏳
+            {% endif %}
+        </p>
+
+
+        {% if not task.completed %}
+        <a href="/complete/{{ task.id }}">
+            Complete
+        </a>
+        {% endif %}
+
+
+        <a href="/delete/{{ task.id }}">
+            Delete
+        </a>
+
+    </div>
+
+    <hr>
+
+    {% endfor %}
+
+{% else %}
+
+    <p>
+        No tasks yet. Create your first task!
+    </p>
+
+{% endif %}
+
+
+{% endblock %}

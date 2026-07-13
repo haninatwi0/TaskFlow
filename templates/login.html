@@ -7,13 +7,27 @@ Login
 {% block content %}
 <h1>Login</h1>
 
-<form>
-    <label>Email</label><br>
-    <input type="email" placeholder="Enter your email"><br><br>
+<form method="POST">
 
-    <label>Password</label><br>
-    <input type="password" placeholder="Enter your password"><br><br>
+    <label>Email</label>
+    <input 
+        type="email"
+        name="email"
+        placeholder="Email"
+        required
+    >
 
-    <button type="submit">Login</button>
+    <label>Password</label>
+    <input 
+        type="password"
+        name="password"
+        placeholder="Password"
+        required
+    >
+
+    <button type="submit">
+        Login
+    </button>
+
 </form>
 {% endblock %}

@@ -18,6 +18,12 @@ class User(db.Model):
         db.String(200),
         nullable=False
     )
+    
+    tasks = db.relationship(
+        "Task",
+        backref="owner",
+        lazy=True
+    )
 
     def __repr__(self):
         return f"<User {self.email}>"

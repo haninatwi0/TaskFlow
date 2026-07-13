@@ -1,12 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaskFlow</title>
-</head>
-<body>
-    <h1>Welcome to TaskFlow 🚀</h1>
-    <p>Your first Flask project is working!</p>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+<h1>Welcome to TaskFlow 🚀</h1>
+
+<p>This is my first Flask project.</p>
+
+<button>Get Started</button>
+{% endblock %}

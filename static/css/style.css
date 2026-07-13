@@ -116,13 +116,21 @@ nav a:hover{
    STATISTICS
 ========================== */
 
-.stats-container{
+.stats-container {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
 
-    display:flex;
+@media (max-width: 768px) {
 
-    gap:20px;
+    .stats-container {
+        flex-direction: column;
+    }
 
-    margin-bottom:40px;
+    .stat-card {
+        width: 100%;
+    }
 
 }
 
@@ -255,6 +263,23 @@ button:hover{
 
     margin-bottom:25px;
 
+}
+
+.task-card {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.task-form input,
+.task-form textarea,
+.task-form select,
+.task-form button {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.welcome-card {
+    text-align: center;
 }
 
 .task-card{
@@ -476,6 +501,20 @@ nav{
 
     gap:15px;
 
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 8%;
+    flex-wrap: wrap;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
 .task-buttons{
@@ -762,4 +801,48 @@ nav{
 
 .pink-button:hover {
     opacity: 0.8;
+}
+
+
+
+@media (max-width: 768px) {
+
+    body {
+        padding: 10px;
+    }
+
+    .navbar {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .nav-links {
+        justify-content: center;
+    }
+
+    .container {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .welcome-card h1 {
+        font-size: 28px;
+    }
+
+    .task-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .task-buttons a {
+        width: 100%;
+        text-align: center;
+    }
+
+    footer {
+        text-align: center;
+    }
+
 }

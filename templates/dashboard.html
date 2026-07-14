@@ -339,11 +339,14 @@ Dashboard
 
                 {% endif %}
 
-                <a class="delete-btn"
-                   href="/delete/{{ task.id }}">
-                    Delete
-                </a>
+                <a
+                class="delete-btn"
+                href="/delete/{{ task.id }}"
+                onclick="return confirm('Delete this task?');">
 
+                Delete
+
+                </a>
             </div>
 
         </div>

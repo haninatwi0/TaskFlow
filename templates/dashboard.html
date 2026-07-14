@@ -41,7 +41,27 @@ Dashboard
     </div>
 
 </div>
+<div class="progress-card">
 
+    <h2>Task Progress</h2>
+
+    <div class="progress-bar">
+
+        <div
+            class="progress-fill"
+            style="width: {{ progress }}%;">
+        </div>
+
+    </div>
+
+    <p>
+
+        {{ completed_tasks }} of {{ total_tasks }}
+        tasks completed ({{ progress }}%)
+
+    </p>
+
+</div>
 
 <!-- Create Task -->
 <div class="task-form">

@@ -1,3 +1,4 @@
+from asyncio import tasks
 import email
 import re
 from flask import Flask, render_template, request, redirect, session, flash 
@@ -111,6 +112,15 @@ def dashboard():
         tasks = tasks.order_by(Task.due_date.asc())
 
     tasks = tasks.all()
+    
+    total_tasks = len(tasks)
+
+    completed_tasks = sum(1 for task in tasks if task.completed)
+
+    if total_tasks > 0:
+        progress = int((completed_tasks / total_tasks) * 100)
+    else:
+        progress = 0
 
     return render_template(
         "dashboard.html",
@@ -119,7 +129,10 @@ def dashboard():
         search=search,
         status=status,
         priority=priority,
-        sort=sort
+        sort=sort,
+        total_tasks=total_tasks,
+        completed_tasks=completed_tasks,
+        progress=progress
     )
     
     
@@ -175,7 +188,14 @@ def register():
 
         flash("Account created successfully! Please log in.", "success")
         return redirect("/login")
+    total_tasks = len(tasks)
 
+    completed_tasks = sum(1 for task in tasks if task.completed)
+
+    if total_tasks > 0:
+        progress = int((completed_tasks / total_tasks) * 100)
+    else:
+        progress = 0
     return render_template("register.html")
 
 

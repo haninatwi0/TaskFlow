@@ -113,6 +113,29 @@ def dashboard():
 
     tasks = tasks.all()
     
+    today = date.today()
+
+    due_today = sum(
+        1 for task in tasks
+        if task.due_date == today
+    )
+
+    due_this_week = sum(
+        1 for task in tasks
+        if task.due_date
+        and 0 <= (task.due_date - today).days <= 7
+    )
+
+    high_priority = sum(
+        1 for task in tasks
+        if task.priority == "High"
+    )
+
+    pending_tasks = sum(
+        1 for task in tasks
+        if not task.completed
+    )
+    
     total_tasks = len(tasks)
 
     completed_tasks = sum(1 for task in tasks if task.completed)
@@ -133,7 +156,11 @@ def dashboard():
         total_tasks=total_tasks,
         completed_tasks=completed_tasks,
         progress=progress,
-        today=date.today()
+        today=date.today(),
+        due_today=due_today,
+        due_this_week=due_this_week,
+        high_priority=high_priority,
+        pending_tasks=pending_tasks
     )
     
     

@@ -234,20 +234,56 @@ def add_task():
         flash("Please login first.", "error")
         return redirect("/login")
 
-    title = request.form["title"]
-    description = request.form["description"]
-    priority = request.form["priority"]
-    user_id = session["user_id"]
 
+    title = request.form["title"].strip()
+    description = request.form["description"].strip()
+    priority = request.form["priority"]
     due_date_input = request.form["due_date"]
 
-    if due_date_input:
-        due_date = datetime.strptime(
-            due_date_input,
-            "%Y-%m-%d"
-        ).date()
-    else:
+
+    # Validate title
+    if not title:
+        flash("Task title is required.", "error")
+        return redirect("/dashboard")
+
+
+    if len(title) < 3:
+        flash("Task title must contain at least 3 characters.", "error")
+        return redirect("/dashboard")
+
+
+    # Validate description
+    if not description:
+        flash("Task description is required.", "error")
+        return redirect("/dashboard")
+
+
+    if len(description) < 5:
+        flash("Description must contain at least 5 characters.", "error")
+        return redirect("/dashboard")
+
+
+    # Validate priority
+    if not priority:
+        flash("Please select a priority.", "error")
+        return redirect("/dashboard")
+
+
+    # Validate due date
+    if not due_date_input:
         flash("Please select a due date.", "error")
+        return redirect("/dashboard")
+
+
+    due_date = datetime.strptime(
+        due_date_input,
+        "%Y-%m-%d"
+    ).date()
+
+
+    # Prevent past dates
+    if due_date < date.today():
+        flash("Due date cannot be in the past.", "error")
         return redirect("/dashboard")
 
 
@@ -261,13 +297,14 @@ def add_task():
 
         priority=priority,
 
-        user_id=user_id
+        user_id=session["user_id"]
 
     )
 
 
     db.session.add(new_task)
     db.session.commit()
+
 
     flash("Task created successfully!", "success")
 

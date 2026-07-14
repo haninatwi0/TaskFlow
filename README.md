@@ -1,42 +1,38 @@
-# TaskFlow 🚀
+# 📋 TaskFlow
 
-A modern task management web application built with **Flask**, designed to help users organize, track, and manage their daily tasks efficiently.
-
-TaskFlow provides a complete full-stack experience with user authentication, database management, and CRUD operations. The project was developed to practice backend development, database integration, and building a structured web application using Python.
+TaskFlow is a modern task management web application built with **Python**, **Flask**, **SQLAlchemy**, **HTML**, and **CSS**. It helps users organize their daily tasks through a clean, responsive interface while demonstrating secure authentication and CRUD operations.
 
 ---
 
-## 📌 Features
+## ✨ Features
 
 ### 🔐 User Authentication
 
-* User registration system
-* Secure password hashing
-* Login and logout functionality
-* Session-based authentication
-* Protection of private pages
+* User registration
+* Secure login and logout
+* Password hashing with Werkzeug
+* Session management
+* Email uniqueness validation
+* Strong password validation
+* Flash messages for user feedback
 
 ### ✅ Task Management
 
-* Create new tasks
-* View personal tasks
+* Create tasks
+* View all tasks
 * Mark tasks as completed
 * Delete tasks
-* Tasks are linked to individual user accounts
+* Due dates
+* Priority levels (High, Medium, Low)
+* Task statistics dashboard
 
 ### 🎨 User Interface
 
-* Custom dark theme design
-* Black and pink visual identity
-* Responsive page structure
-* Shared layout using Flask templates
-
-### 🗄️ Database
-
-* SQLite database integration
-* SQLAlchemy ORM
-* User and Task data models
-* Relationship between users and their tasks
+* Responsive design for desktop, tablet, and mobile
+* Black and pink custom theme
+* Professional dashboard
+* Navigation bar
+* Custom 404 and 500 error pages
 
 ---
 
@@ -44,11 +40,11 @@ TaskFlow provides a complete full-stack experience with user authentication, dat
 
 ### Backend
 
-* Python
+* Python 3
 * Flask
 * Flask-SQLAlchemy
 * SQLite
-* Werkzeug Security
+* Werkzeug
 
 ### Frontend
 
@@ -58,136 +54,132 @@ TaskFlow provides a complete full-stack experience with user authentication, dat
 
 ### Development Tools
 
-* Git & GitHub
-* Virtual Environment (`venv`)
-* Python-dotenv
+* Git
+* GitHub
+* Visual Studio Code
 
 ---
 
 ## 📂 Project Structure
 
-```
+```text
 TaskFlow/
-
 │
-├── app.py                 # Main Flask application
-├── requirements.txt       # Project dependencies
-├── README.md              # Project documentation
-├── .env                   # Environment variables
-├── taskflow.db            # SQLite database
+├── app.py
+├── requirements.txt
+├── README.md
+├── .gitignore
 │
 ├── models/
-│   ├── user.py            # User database model
-│   └── task.py            # Task database model
+│   ├── user.py
+│   └── task.py
+│
+├── static/
+│   ├── css/
+│   │   └── style.css
+│   └── images/
 │
 ├── templates/
-│   ├── base.html          # Main layout
-│   ├── index.html         # Home page
-│   ├── login.html         # Login page
-│   ├── register.html      # Registration page
-│   └── dashboard.html     # User dashboard
+│   ├── base.html
+│   ├── index.html
+│   ├── login.html
+│   ├── register.html
+│   ├── dashboard.html
+│   ├── 404.html
+│   └── 500.html
 │
-└── static/
-    └── css/
-        └── style.css      # Application styling
+└── instance/
 ```
 
 ---
 
-## ⚙️ Installation and Setup
+## 🚀 Installation
 
-### 1. Clone the repository
+Clone the repository:
 
 ```bash
-git clone YOUR_REPOSITORY_LINK
+git clone https://github.com/YOUR_USERNAME/TaskFlow.git
 ```
 
-### 2. Navigate to the project folder
+Open the project:
 
 ```bash
 cd TaskFlow
 ```
 
-### 3. Create a virtual environment
+Create a virtual environment:
 
 ```bash
 python -m venv venv
 ```
 
-### 4. Activate the virtual environment
+Activate the virtual environment:
 
-Windows:
+**Windows**
 
 ```bash
 venv\Scripts\activate
 ```
 
-Mac/Linux:
+**macOS / Linux**
 
 ```bash
 source venv/bin/activate
 ```
 
-### 5. Install dependencies
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 6. Create environment variables
-
-Create a file named:
-
-```
-.env
-```
-
-Add:
-
-```
-SECRET_KEY=your_secret_key
-```
-
-### 7. Run the application
+Run the application:
 
 ```bash
 python app.py
 ```
 
-The application will be available at:
+Open your browser:
 
-```
+```text
 http://127.0.0.1:5000
 ```
 
 ---
 
-## 🧠 What I Learned
+## 🔒 Security Features
 
-Through this project, I practiced:
-
-* Building a complete Flask application
-* Creating backend routes and handling requests
-* Working with databases using ORM
-* Designing relational database models
-* Implementing authentication systems
-* Managing user sessions
-* Structuring a professional GitHub repository
+* Passwords are securely hashed before storage.
+* Duplicate email registration is prevented.
+* Email addresses are validated.
+* Passwords must meet strength requirements.
+* Session-based authentication protects user access.
 
 ---
 
-## 🚀 Future Improvements
+## 📱 Responsive Design
 
-Planned features:
+TaskFlow is optimized for:
 
-* [ ] Task categories
-* [ ] Due dates and reminders
-* [ ] Task priority levels
-* [ ] Search and filtering
-* [ ] User profile customization
-* [ ] REST API integration
-* [ ] Deployment with cloud hosting
-* [ ] React frontend version
+* 💻 Desktop
+* 📱 Mobile
+* 📲 Tablet
+
+---
+
+## 🎯 Future Improvements
+
+* Edit tasks
+* Search and filter tasks
+* Categories
+* Calendar view
+* User profile page
+* Email verification
+* Password reset
+* Notifications
+* PostgreSQL database
+* Dark/Light mode switch
+* Premium subscription
 
 ---
 
@@ -195,12 +187,14 @@ Planned features:
 
 **Hanin Atwi**
 
-Computer Science Student
+Computer Science Student at FIAP
 
-Interested in software development, backend engineering, and building practical applications.
+GitHub: https://github.com/haninatwi0
+
+LinkedIn: https://linkedin.com/in/haninatwi
 
 ---
 
 ## 📄 License
 
-This project is created for educational and portfolio purposes.
+This project was developed for educational purposes and portfolio demonstration.

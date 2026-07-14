@@ -11,7 +11,7 @@ from models.task import Task
 import os
 from dotenv import load_dotenv
 
-from datetime import datetime
+from datetime import datetime, date
 
 
 
@@ -132,7 +132,8 @@ def dashboard():
         sort=sort,
         total_tasks=total_tasks,
         completed_tasks=completed_tasks,
-        progress=progress
+        progress=progress,
+        today=date.today()
     )
     
     

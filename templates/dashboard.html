@@ -223,7 +223,9 @@ Dashboard
 
         {% for task in tasks %}
 
-        <div class="task-card">
+        {% set overdue = task.due_date and task.due_date < today and not task.completed %}
+
+        <div class="task-card {% if overdue %}overdue-task{% endif %}">
 
             <h3>{{ task.title }}</h3>
 
@@ -239,6 +241,16 @@ Dashboard
                 {% else %}
 
                     No date set
+
+                {% endif %}
+            
+                {% if overdue %}
+
+                <p class="overdue-text">
+
+                    🔴 Overdue
+
+                </p>
 
                 {% endif %}
             <p>

@@ -984,3 +984,24 @@ nav{
     margin-top:10px;
 
 }
+
+
+/* Overdue Tasks */
+
+.overdue-task{
+
+    border-left:6px solid #e74c3c;
+
+    background:#1b1b1b;
+
+}
+
+.overdue-text{
+
+    color:#e74c3c;
+
+    font-weight:bold;
+
+    margin-top:10px;
+
+}

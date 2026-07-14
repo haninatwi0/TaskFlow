@@ -846,3 +846,17 @@ nav{
     }
 
 }
+
+.delete-account-btn {
+    display: inline-block;
+    background: #d32f2f;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    margin-top: 30px;
+}
+
+.delete-account-btn:hover {
+    background: #b71c1c;
+}

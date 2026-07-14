@@ -1,5 +1,5 @@
 import email
-
+import re
 from flask import Flask, render_template, request, redirect, session, flash 
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import user
@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 
 from datetime import datetime
 
-import re
+
 
 app = Flask(__name__)
 load_dotenv()
@@ -87,7 +87,7 @@ def register():
 
         name = request.form["name"]
         email = request.form["email"]
-        password = generate_password_hash(request.form["password"])
+        password = request.form["password"]
         email_pattern = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
         if not re.match(email_pattern, email):
             flash("Please enter a valid email address.", "error")
@@ -99,6 +99,27 @@ def register():
             flash("Email is already registered.", "error")
             return redirect("/register")
 
+        if len(password) < 8:
+            flash("Password must be at least 8 characters long.", "error")
+            return redirect("/register")
+
+        if not re.search(r"[A-Z]", password):
+            flash("Password must contain an uppercase letter.", "error")
+            return redirect("/register")
+
+        if not re.search(r"[a-z]", password):
+            flash("Password must contain a lowercase letter.", "error")
+            return redirect("/register")
+
+        if not re.search(r"\d", password):
+            flash("Password must contain a number.", "error")
+            return redirect("/register")
+
+        if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
+            flash("Password must contain a special character.", "error")
+            return redirect("/register")
+        password = generate_password_hash(password)
+        
         # Create the new user
         new_user = User(
             name=name,

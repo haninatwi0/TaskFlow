@@ -1,3 +1,5 @@
+import email
+
 from flask import Flask, render_template, request, redirect, session, flash 
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import user
@@ -9,6 +11,8 @@ import os
 from dotenv import load_dotenv
 
 from datetime import datetime
+
+import re
 
 app = Flask(__name__)
 load_dotenv()
@@ -84,10 +88,13 @@ def register():
         name = request.form["name"]
         email = request.form["email"]
         password = generate_password_hash(request.form["password"])
-
+        email_pattern = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
+        if not re.match(email_pattern, email):
+            flash("Please enter a valid email address.", "error")
+            return redirect("/register")
         # Check if email already exists
         existing_user = User.query.filter_by(email=email).first()
-
+        
         if existing_user:
             flash("Email is already registered.", "error")
             return redirect("/register")

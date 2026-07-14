@@ -115,6 +115,21 @@ Dashboard
 
     <h2>Your Tasks</h2>
 
+    <form class="search-form" method="GET" action="/dashboard">
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search tasks..."
+            value="{{ search }}"
+        >
+
+        <button type="submit">
+            Search
+        </button>
+
+    </form>
+
     {% if tasks %}
 
         {% for task in tasks %}

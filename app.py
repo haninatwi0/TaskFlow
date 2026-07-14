@@ -76,10 +76,23 @@ def dashboard():
         flash("Please login again.", "error")
         return redirect("/login")
 
+    search = request.args.get("search", "").strip()
+
+    tasks = Task.query.filter_by(user_id=user.id)
+
+    if search:
+        tasks = tasks.filter(
+            (Task.title.ilike(f"%{search}%")) |
+            (Task.description.ilike(f"%{search}%"))
+        )
+
+    tasks = tasks.order_by(Task.created_at.desc()).all()
+
     return render_template(
         "dashboard.html",
         user=user,
-        tasks=user.tasks
+        tasks=tasks,
+        search=search
     )
     
     

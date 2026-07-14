@@ -77,6 +77,9 @@ def dashboard():
         return redirect("/login")
 
     search = request.args.get("search", "").strip()
+    status = request.args.get("status", "all")
+    priority = request.args.get("priority", "all")
+    sort = request.args.get("sort", "newest")
 
     tasks = Task.query.filter_by(user_id=user.id)
 
@@ -86,13 +89,37 @@ def dashboard():
             (Task.description.ilike(f"%{search}%"))
         )
 
-    tasks = tasks.order_by(Task.created_at.desc()).all()
+    if status == "completed":
+        tasks = tasks.filter_by(completed=True)
+
+    elif status == "pending":
+        tasks = tasks.filter_by(completed=False)
+
+    if priority != "all":
+        tasks = tasks.filter_by(priority=priority)
+
+    if sort == "newest":
+        tasks = tasks.order_by(Task.created_at.desc())
+
+    elif sort == "oldest":
+        tasks = tasks.order_by(Task.created_at.asc())
+
+    elif sort == "title":
+        tasks = tasks.order_by(Task.title.asc())
+
+    elif sort == "due":
+        tasks = tasks.order_by(Task.due_date.asc())
+
+    tasks = tasks.all()
 
     return render_template(
         "dashboard.html",
         user=user,
         tasks=tasks,
-        search=search
+        search=search,
+        status=status,
+        priority=priority,
+        sort=sort
     )
     
     

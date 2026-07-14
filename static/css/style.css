@@ -877,11 +877,11 @@ nav{
 
 
 
-/* Search Form */
-
 .search-form{
 
     display:flex;
+
+    flex-wrap:wrap;
 
     gap:10px;
 
@@ -889,29 +889,34 @@ nav{
 
 }
 
-.search-form input{
-
-    flex:1;
+.search-form input,
+.search-form select{
 
     padding:12px;
 
-    border:1px solid #ccc;
-
     border-radius:8px;
 
-    font-size:16px;
+    border:1px solid #ccc;
+
+    font-size:15px;
+
+}
+
+.search-form input{
+
+    flex:2;
 
 }
 
 .search-form button{
-
-    padding:12px 20px;
 
     background:#3498db;
 
     color:white;
 
     border:none;
+
+    padding:12px 20px;
 
     border-radius:8px;
 

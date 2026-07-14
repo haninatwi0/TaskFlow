@@ -115,18 +115,87 @@ Dashboard
 
     <h2>Your Tasks</h2>
 
-    <form class="search-form" method="GET" action="/dashboard">
+    <form class="search-form" method="GET">
 
-        <input
-            type="text"
-            name="search"
-            placeholder="Search tasks..."
-            value="{{ search }}"
-        >
+    <input
+        type="text"
+        name="search"
+        placeholder="Search tasks..."
+        value="{{ search }}"
+    >
 
-        <button type="submit">
-            Search
-        </button>
+    <select name="status">
+
+        <option value="all"
+            {% if status=="all" %}selected{% endif %}>
+            All Tasks
+        </option>
+
+        <option value="pending"
+            {% if status=="pending" %}selected{% endif %}>
+            Pending
+        </option>
+
+        <option value="completed"
+            {% if status=="completed" %}selected{% endif %}>
+            Completed
+        </option>
+
+    </select>
+
+    <select name="priority">
+
+        <option value="all"
+            {% if priority=="all" %}selected{% endif %}>
+            All Priorities
+        </option>
+
+        <option value="High"
+            {% if priority=="High" %}selected{% endif %}>
+            High
+        </option>
+
+        <option value="Medium"
+            {% if priority=="Medium" %}selected{% endif %}>
+            Medium
+        </option>
+
+        <option value="Low"
+            {% if priority=="Low" %}selected{% endif %}>
+            Low
+        </option>
+
+    </select>
+
+    <select name="sort">
+
+        <option value="newest"
+            {% if sort=="newest" %}selected{% endif %}>
+            Newest
+        </option>
+
+        <option value="oldest"
+            {% if sort=="oldest" %}selected{% endif %}>
+            Oldest
+        </option>
+
+        <option value="title"
+            {% if sort=="title" %}selected{% endif %}>
+            A → Z
+        </option>
+
+        <option value="due"
+            {% if sort=="due" %}selected{% endif %}>
+            Due Date
+        </option>
+
+    </select>
+
+    <button type="submit">
+
+        Apply
+
+    </button>
 
     </form>
 

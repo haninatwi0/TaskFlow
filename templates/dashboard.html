@@ -171,7 +171,10 @@ Dashboard
                 </span>
 
             {% endif %}
-
+        <a class="edit-btn"
+        href="/edit/{{ task.id }}">
+            Edit
+        </a>
             <div class="task-buttons">
 
                 {% if not task.completed %}

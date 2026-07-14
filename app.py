@@ -235,6 +235,43 @@ def delete_account():
 
     return redirect("/")
 
+
+
+@app.route("/edit/<int:task_id>", methods=["GET", "POST"])
+def edit_task(task_id):
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    task = Task.query.get_or_404(task_id)
+
+    if task.user_id != session["user_id"]:
+        flash("You are not authorized to edit this task.", "error")
+        return redirect("/dashboard")
+
+    if request.method == "POST":
+
+        task.title = request.form["title"]
+        task.description = request.form["description"]
+        task.priority = request.form["priority"]
+
+        due_date = request.form["due_date"]
+
+        if due_date:
+            task.due_date = datetime.strptime(due_date, "%Y-%m-%d").date()
+        else:
+            task.due_date = None
+
+        db.session.commit()
+
+        flash("Task updated successfully!", "success")
+
+        return redirect("/dashboard")
+
+    return render_template("edit_task.html", task=task)
+
+
+
 # Create database tables
 with app.app_context():
     db.create_all()

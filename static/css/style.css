@@ -860,3 +860,17 @@ nav{
 .delete-account-btn:hover {
     background: #b71c1c;
 }
+
+
+.edit-btn{
+    background:#3498db;
+    color:white;
+    padding:10px 18px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.edit-btn:hover{
+    background:#2980b9;
+}

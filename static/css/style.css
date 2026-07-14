@@ -1043,3 +1043,20 @@ nav{
     color:#3498db;
 
 }
+
+
+.empty-state{
+
+    text-align:center;
+
+    padding:60px 20px;
+
+}
+
+.empty-icon{
+
+    font-size:70px;
+
+    margin-bottom:20px;
+
+}

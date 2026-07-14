@@ -1060,3 +1060,35 @@ nav{
     margin-bottom:20px;
 
 }
+
+
+
+@media(max-width:768px){
+
+.search-form{
+
+flex-direction:column;
+
+}
+
+.search-form input,
+.search-form select,
+.search-form button{
+
+width:100%;
+
+}
+
+.summary-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.progress-card{
+
+padding:15px;
+
+}
+
+}

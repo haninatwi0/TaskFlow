@@ -26,6 +26,9 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 # Connect database with Flask
 db.init_app(app)
 
+print("Database URI:", app.config["SQLALCHEMY_DATABASE_URI"])
+print("Current folder:", os.getcwd())
+
 
 @app.route("/")
 def home():
@@ -214,6 +217,23 @@ def logout():
     flash("You have been logged out.", "success")
 
     return redirect("/login")
+
+@app.route("/delete-account")
+def delete_account():
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    user = User.query.get(session["user_id"])
+
+    db.session.delete(user)
+    db.session.commit()
+
+    session.clear()
+
+    flash("Your account has been deleted.", "success")
+
+    return redirect("/")
 
 # Create database tables
 with app.app_context():

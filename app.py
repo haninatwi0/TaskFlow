@@ -286,15 +286,18 @@ def add_task():
 
 
     # Validate due date
-    if not due_date_input:
-        flash("Please select a due date.", "error")
+    try:
+        due_date = datetime.strptime(
+            due_date_input,
+            "%Y-%m-%d"
+        ).date()
+
+    except ValueError:
+        flash(
+            "Please enter a valid date.",
+            "error"
+        )
         return redirect("/dashboard")
-
-
-    due_date = datetime.strptime(
-        due_date_input,
-        "%Y-%m-%d"
-    ).date()
 
 
     # Prevent past dates

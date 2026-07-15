@@ -235,7 +235,7 @@ def add_task():
     title = request.form["title"].strip()
     description = request.form["description"].strip()
     priority = request.form["priority"]
-    category = request.form["category"]
+    category = request.form.get("category", "Other")
     due_date_input = request.form["due_date"]
 
 

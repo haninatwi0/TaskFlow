@@ -124,6 +124,7 @@ Dashboard
             name="description"
             placeholder="Write a short description..."
             rows="5"
+            required
         ></textarea>
 
         <label for="due_date">
@@ -133,27 +134,66 @@ Dashboard
         <input
             type="date"
             id="due_date"
-            name="due_date">
+            name="due_date"
+            required
+        >
 
         <label for="priority">
             Priority
         </label>
 
-
-        <select name="priority" id="priority">
+        <select
+            name="priority"
+            id="priority"
+            required>
 
             <option value="High">
                 🔴 High
             </option>
 
-
             <option value="Medium" selected>
                 🟡 Medium
             </option>
 
-
             <option value="Low">
                 🟢 Low
+            </option>
+
+        </select>
+
+        <label for="category">
+            Category
+        </label>
+
+        <select
+            name="category"
+            id="category"
+            required>
+
+            <option value="">Choose a category</option>
+
+            <option value="Study">
+                📚 Study
+            </option>
+
+            <option value="Work">
+                💼 Work
+            </option>
+
+            <option value="Personal">
+                🏠 Personal
+            </option>
+
+            <option value="Health">
+                ❤️ Health
+            </option>
+
+            <option value="Shopping">
+                🛒 Shopping
+            </option>
+
+            <option value="Other" selected>
+                🎯 Other
             </option>
 
         </select>
@@ -221,6 +261,30 @@ Dashboard
             {% if priority=="Low" %}selected{% endif %}>
             Low
         </option>
+
+    </select>
+
+
+    <label for="category"></label>
+
+    <select
+        name="category"
+        id="category"
+        required>
+
+        <option value="">Choose a category</option>
+
+        <option value="Study">📚 Study</option>
+
+        <option value="Work">💼 Work</option>
+
+        <option value="Personal">🏠 Personal</option>
+
+        <option value="Health">❤️ Health</option>
+
+        <option value="Shopping">🛒 Shopping</option>
+
+        <option value="Other">🎯 Other</option>
 
     </select>
 
@@ -306,6 +370,14 @@ Dashboard
                     🟢 Low
 
                 {% endif %}
+
+            </p>
+
+            <p>
+
+                <strong>Category:</strong>
+
+                {{ task.category }}
 
             </p>
 

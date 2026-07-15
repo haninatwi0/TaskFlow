@@ -36,6 +36,12 @@ class Task(db.Model):
     db.String(20),
     default="Medium"
     )
+    
+    category = db.Column(
+    db.String(30),
+    nullable=False,
+    default="Other"
+    )
 
     # Connection with User
     user_id = db.Column(

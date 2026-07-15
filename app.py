@@ -5,6 +5,7 @@ from flask import Flask, render_template, request, redirect, session, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import user
 from models.user import db, User
+from flask_migrate import Migrate
 from sqlalchemy.exc import IntegrityError
 from models.task import Task
 
@@ -26,6 +27,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # Connect database with Flask
 db.init_app(app)
+migrate = Migrate(app, db)
 
 print("Database URI:", app.config["SQLALCHEMY_DATABASE_URI"])
 print("Current folder:", os.getcwd())
@@ -156,7 +158,7 @@ def dashboard():
         total_tasks=total_tasks,
         completed_tasks=completed_tasks,
         progress=progress,
-        today=date.today(),
+        today=today,
         due_today=due_today,
         due_this_week=due_this_week,
         high_priority=high_priority,
@@ -172,13 +174,15 @@ def register():
         name = request.form["name"]
         email = request.form["email"]
         password = request.form["password"]
+
         email_pattern = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
+
         if not re.match(email_pattern, email):
             flash("Please enter a valid email address.", "error")
             return redirect("/register")
-        # Check if email already exists
+
         existing_user = User.query.filter_by(email=email).first()
-        
+
         if existing_user:
             flash("Email is already registered.", "error")
             return redirect("/register")
@@ -202,9 +206,9 @@ def register():
         if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
             flash("Password must contain a special character.", "error")
             return redirect("/register")
+
         password = generate_password_hash(password)
-        
-        # Create the new user
+
         new_user = User(
             name=name,
             email=email,
@@ -216,14 +220,7 @@ def register():
 
         flash("Account created successfully! Please log in.", "success")
         return redirect("/login")
-    total_tasks = len(tasks)
 
-    completed_tasks = sum(1 for task in tasks if task.completed)
-
-    if total_tasks > 0:
-        progress = int((completed_tasks / total_tasks) * 100)
-    else:
-        progress = 0
     return render_template("register.html")
 
 
@@ -238,6 +235,7 @@ def add_task():
     title = request.form["title"].strip()
     description = request.form["description"].strip()
     priority = request.form["priority"]
+    category = request.form["category"]
     due_date_input = request.form["due_date"]
 
 
@@ -296,6 +294,8 @@ def add_task():
         due_date=due_date,
 
         priority=priority,
+        
+        category=category,
 
         user_id=session["user_id"]
 

@@ -25,7 +25,7 @@ Profile
         {% if user.joined_at %}
             {{ user.joined_at.strftime("%d %B %Y") }}
         {% else %}
-            Unknown
+            Not available
         {% endif %}
     </p>
 
@@ -33,20 +33,48 @@ Profile
 
     <h3>Statistics</h3>
 
-    <p>📋 Total Tasks: {{ total_tasks }}</p>
+    <div class="summary-grid">
 
-    <p>✅ Completed: {{ completed_tasks }}</p>
+        <div class="summary-card">
+            <h3>📋 Total Tasks</h3>
+            <p>{{ total_tasks }}</p>
+        </div>
 
-    <p>⏳ Pending: {{ pending_tasks }}</p>
+        <div class="summary-card">
+            <h3>✅ Completed</h3>
+            <p>{{ completed_tasks }}</p>
+        </div>
 
-    <p>🎯 Completion: {{ progress }}%</p>
+        <div class="summary-card">
+            <h3>⏳ Pending</h3>
+            <p>{{ pending_tasks }}</p>
+        </div>
+
+        <div class="summary-card">
+            <h3>🎯 Completion</h3>
+            <p>{{ progress }}%</p>
+        </div>
+
+    </div>
 
     <br>
 
-    <a class="edit-btn" href="/dashboard">
+    <div style="margin-top:30px;">
+
+    <a
+        class="edit-btn"
+        href="/edit-profile">
+        Edit Profile
+    </a>
+
+    <a
+        class="complete-btn"
+        href="/dashboard"
+        style="margin-left:15px;">
         Back to Dashboard
     </a>
 
+</div>
 </div>
 
 {% endblock %}

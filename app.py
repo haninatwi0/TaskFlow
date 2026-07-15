@@ -424,6 +424,51 @@ def profile():
         pending_tasks=pending_tasks,
         progress=progress
     )
+    
+    
+@app.route("/edit-profile", methods=["GET", "POST"])
+def edit_profile():
+
+    if "user_id" not in session:
+        flash("Please login first.", "error")
+        return redirect("/login")
+
+    user = User.query.get(session["user_id"])
+
+    if request.method == "POST":
+
+        name = request.form["name"].strip()
+        email = request.form["email"].strip()
+
+        if not name:
+            flash("Name cannot be empty.", "error")
+            return redirect("/edit-profile")
+
+        email_pattern = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
+
+        if not re.match(email_pattern, email):
+            flash("Please enter a valid email address.", "error")
+            return redirect("/edit-profile")
+
+        existing_user = User.query.filter_by(email=email).first()
+
+        if existing_user and existing_user.id != user.id:
+            flash("This email is already registered.", "error")
+            return redirect("/edit-profile")
+
+        user.name = name
+        user.email = email
+
+        db.session.commit()
+
+        flash("Profile updated successfully!", "success")
+
+        return redirect("/profile")
+
+    return render_template(
+        "edit_profile.html",
+        user=user
+    )
 
 
 

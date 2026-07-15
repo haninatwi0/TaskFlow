@@ -224,6 +224,10 @@ textarea{
 
 }
 
+/* ==========================
+   GENERAL BUTTON
+========================== */
+
 button{
 
     background:#ff4fa3;
@@ -236,8 +240,6 @@ button{
 
     border-radius:10px;
 
-    margin-top:25px;
-
     cursor:pointer;
 
     font-size:16px;
@@ -245,6 +247,7 @@ button{
     transition:.3s;
 
 }
+
 
 button:hover{
 
@@ -1090,5 +1093,93 @@ grid-template-columns:1fr;
 padding:15px;
 
 }
+
+}
+
+
+
+/* ==========================
+   PROFILE FORM BUTTONS
+========================== */
+
+.form-buttons{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-top:25px;
+
+}
+
+
+.form-buttons button,
+.form-buttons a{
+
+    width:170px;
+
+    height:48px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    box-sizing:border-box;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    border-radius:8px;
+
+}
+
+
+/* SAVE BUTTON */
+
+.form-buttons button{
+
+    background:#ff4fa3;
+
+    color:white;
+
+    border:none;
+
+    cursor:pointer;
+
+    margin-top:0;
+
+}
+
+
+.form-buttons button:hover{
+
+    background:#ff75b9;
+
+}
+
+
+/* CANCEL BUTTON */
+
+.cancel-btn{
+
+    background:#6c757d;
+
+    color:white;
+
+    text-decoration:none;
+
+}
+
+
+.cancel-btn:hover{
+
+    background:#5a6268;
 
 }

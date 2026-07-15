@@ -389,6 +389,42 @@ def delete_account():
 
     return redirect("/")
 
+@app.route("/profile")
+def profile():
+
+    if "user_id" not in session:
+        flash("Please login first.", "error")
+        return redirect("/login")
+
+    user = User.query.get(session["user_id"])
+
+    tasks = Task.query.filter_by(user_id=user.id).all()
+
+    total_tasks = len(tasks)
+
+    completed_tasks = sum(
+        1 for task in tasks
+        if task.completed
+    )
+
+    pending_tasks = total_tasks - completed_tasks
+
+    if total_tasks > 0:
+        progress = int(
+            completed_tasks * 100 / total_tasks
+        )
+    else:
+        progress = 0
+
+    return render_template(
+        "profile.html",
+        user=user,
+        total_tasks=total_tasks,
+        completed_tasks=completed_tasks,
+        pending_tasks=pending_tasks,
+        progress=progress
+    )
+
 
 
 @app.route("/edit/<int:task_id>", methods=["GET", "POST"])
@@ -397,7 +433,10 @@ def edit_task(task_id):
     if "user_id" not in session:
         return redirect("/login")
 
-    task = Task.query.get_or_404(task_id)
+    task = db.session.get(Task, task_id)
+
+    if task is None:
+        abort(404)
 
     if task.user_id != session["user_id"]:
         flash("You are not authorized to edit this task.", "error")
@@ -408,14 +447,24 @@ def edit_task(task_id):
         task.title = request.form["title"]
         task.description = request.form["description"]
         task.priority = request.form["priority"]
+        task.category = request.form.get("category", "Other")
 
         due_date = request.form["due_date"]
 
         if due_date:
-            task.due_date = datetime.strptime(due_date, "%Y-%m-%d").date()
+            try:
+                task.due_date = datetime.strptime(
+                    due_date,
+                    "%Y-%m-%d"
+                ).date()
+
+            except ValueError:
+                flash("Please enter a valid due date.", "error")
+                return redirect(f"/edit/{task.id}")
+
         else:
             task.due_date = None
-
+        
         db.session.commit()
 
         flash("Task updated successfully!", "success")

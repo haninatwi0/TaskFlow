@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block content %}
+
+<div class="profile-card">
+
+    <h1>👤 My Profile</h1>
+
+    <hr>
+
+    <h2>{{ user.name }}</h2>
+
+    <p>
+        <strong>Email:</strong>
+        {{ user.email }}
+    </p>
+
+    <p>
+        <strong>Member Since:</strong>
+
+        {% if user.joined_at %}
+            {{ user.joined_at.strftime("%d %B %Y") }}
+        {% else %}
+            Unknown
+        {% endif %}
+    </p>
+
+    <hr>
+
+    <h3>Statistics</h3>
+
+    <p>📋 Total Tasks: {{ total_tasks }}</p>
+
+    <p>✅ Completed: {{ completed_tasks }}</p>
+
+    <p>⏳ Pending: {{ pending_tasks }}</p>
+
+    <p>🎯 Completion: {{ progress }}%</p>
+
+    <br>
+
+    <a class="edit-btn" href="/dashboard">
+        Back to Dashboard
+    </a>
+
+</div>
+
+{% endblock %}

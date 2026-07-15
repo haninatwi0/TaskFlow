@@ -57,6 +57,43 @@ Edit Task
 
         </select>
 
+
+        <label>Category</label>
+
+        <select name="category">
+
+            <option value="Study"
+                {% if task.category == "Study" %}selected{% endif %}>
+                📚 Study
+            </option>
+
+            <option value="Work"
+                {% if task.category == "Work" %}selected{% endif %}>
+                💼 Work
+            </option>
+
+            <option value="Personal"
+                {% if task.category == "Personal" %}selected{% endif %}>
+                🏠 Personal
+            </option>
+
+            <option value="Health"
+                {% if task.category == "Health" %}selected{% endif %}>
+                ❤️ Health
+            </option>
+
+            <option value="Shopping"
+                {% if task.category == "Shopping" %}selected{% endif %}>
+                🛒 Shopping
+            </option>
+
+            <option value="Other"
+                {% if task.category == "Other" %}selected{% endif %}>
+                🎯 Other
+            </option>
+
+        </select>
+
         <button type="submit">
             Save Changes
         </button>

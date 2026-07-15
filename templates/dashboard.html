@@ -98,6 +98,38 @@ Dashboard
 
     </div>
 
+    <div class="summary-card">
+        <h3>📚 Study</h3>
+        <p>{{ study_tasks }}</p>
+    </div>
+
+    <div class="summary-card">
+        <h3>💼 Work</h3>
+        <p>{{ work_tasks }}</p>
+    </div>
+
+    <div class="summary-card">
+        <h3>🏠 Personal</h3>
+        <p>{{ personal_tasks }}</p>
+    </div>
+
+
+    <div class="summary-card">
+        <h3>❤️ Health</h3>
+        <p>{{ health_tasks }}</p>
+    </div>
+
+    <div class="summary-card">
+        <h3>🛒 Shopping</h3>
+        <p>{{ shopping_tasks }}</p>
+    </div>
+
+    <div class="summary-card">
+        <h3>🎯 Other</h3>
+        <p>{{ other_tasks }}</p>
+    </div>
+
+
 </div>
 
 <!-- Create Task -->
@@ -161,42 +193,46 @@ Dashboard
 
         </select>
 
-        <label for="category">
-            Category
-        </label>
+        <label for="category-filter">Category</label>
 
-        <select
-            name="category"
-            id="category"
-            required>
+<select name="category" id="category-filter">
 
-            <option value="">Choose a category</option>
+    <option value="all"
+        {% if category=="all" %}selected{% endif %}>
+        All Categories
+    </option>
 
-            <option value="Study">
-                📚 Study
-            </option>
+    <option value="Study"
+        {% if category=="Study" %}selected{% endif %}>
+        📚 Study
+    </option>
 
-            <option value="Work">
-                💼 Work
-            </option>
+    <option value="Work"
+        {% if category=="Work" %}selected{% endif %}>
+        💼 Work
+    </option>
 
-            <option value="Personal">
-                🏠 Personal
-            </option>
+    <option value="Personal"
+        {% if category=="Personal" %}selected{% endif %}>
+        🏠 Personal
+    </option>
 
-            <option value="Health">
-                ❤️ Health
-            </option>
+    <option value="Health"
+        {% if category=="Health" %}selected{% endif %}>
+        ❤️ Health
+    </option>
 
-            <option value="Shopping">
-                🛒 Shopping
-            </option>
+    <option value="Shopping"
+        {% if category=="Shopping" %}selected{% endif %}>
+        🛒 Shopping
+    </option>
 
-            <option value="Other" selected>
-                🎯 Other
-            </option>
+    <option value="Other"
+        {% if category=="Other" %}selected{% endif %}>
+        🎯 Other
+    </option>
 
-        </select>
+</select>
 
         <button type="submit">
             Add Task
@@ -264,29 +300,44 @@ Dashboard
 
     </select>
 
+<select name="category" id="category-filter">
 
-    <label for="category"></label>
+    <option value="all"
+        {% if category=="all" %}selected{% endif %}>
+        All Categories
+    </option>
 
-    <select
-        name="category"
-        id="category"
-        required>
+    <option value="Study"
+        {% if category=="Study" %}selected{% endif %}>
+        📚 Study
+    </option>
 
-        <option value="">Choose a category</option>
+    <option value="Work"
+        {% if category=="Work" %}selected{% endif %}>
+        💼 Work
+    </option>
 
-        <option value="Study">📚 Study</option>
+    <option value="Personal"
+        {% if category=="Personal" %}selected{% endif %}>
+        🏠 Personal
+    </option>
 
-        <option value="Work">💼 Work</option>
+    <option value="Health"
+        {% if category=="Health" %}selected{% endif %}>
+        ❤️ Health
+    </option>
 
-        <option value="Personal">🏠 Personal</option>
+    <option value="Shopping"
+        {% if category=="Shopping" %}selected{% endif %}>
+        🛒 Shopping
+    </option>
 
-        <option value="Health">❤️ Health</option>
+    <option value="Other"
+        {% if category=="Other" %}selected{% endif %}>
+        🎯 Other
+    </option>
 
-        <option value="Shopping">🛒 Shopping</option>
-
-        <option value="Other">🎯 Other</option>
-
-    </select>
+</select>
 
     <select name="sort">
 
@@ -373,13 +424,23 @@ Dashboard
 
             </p>
 
-            <p>
+            <p class="task-category">
 
-                <strong>Category:</strong>
+    {% if task.category == "Study" %}
+        📚 Study
+    {% elif task.category == "Work" %}
+        💼 Work
+    {% elif task.category == "Personal" %}
+        🏠 Personal
+    {% elif task.category == "Health" %}
+        ❤️ Health
+    {% elif task.category == "Shopping" %}
+        🛒 Shopping
+    {% else %}
+        🎯 Other
+    {% endif %}
 
-                {{ task.category }}
-
-            </p>
+</p>
 
             
             </p>

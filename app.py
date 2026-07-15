@@ -82,6 +82,7 @@ def dashboard():
     search = request.args.get("search", "").strip()
     status = request.args.get("status", "all")
     priority = request.args.get("priority", "all")
+    category = request.args.get("category", "all")
     sort = request.args.get("sort", "newest")
 
     tasks = Task.query.filter_by(user_id=user.id)
@@ -100,6 +101,9 @@ def dashboard():
 
     if priority != "all":
         tasks = tasks.filter_by(priority=priority)
+        
+    if category != "all":
+        tasks = tasks.filter_by(category=category)
 
     if sort == "newest":
         tasks = tasks.order_by(Task.created_at.desc())
@@ -132,6 +136,13 @@ def dashboard():
         1 for task in tasks
         if task.priority == "High"
     )
+    
+    study_tasks = sum(1 for task in tasks if task.category == "Study")
+    work_tasks = sum(1 for task in tasks if task.category == "Work")
+    personal_tasks = sum(1 for task in tasks if task.category == "Personal")
+    health_tasks = sum(1 for task in tasks if task.category == "Health")
+    shopping_tasks = sum(1 for task in tasks if task.category == "Shopping")
+    other_tasks = sum(1 for task in tasks if task.category == "Other")
 
     pending_tasks = sum(
         1 for task in tasks
@@ -154,6 +165,13 @@ def dashboard():
         search=search,
         status=status,
         priority=priority,
+        category=category,
+        study_tasks=study_tasks,
+        work_tasks=work_tasks,
+        personal_tasks=personal_tasks,
+        health_tasks=health_tasks,
+        shopping_tasks=shopping_tasks,
+        other_tasks=other_tasks,
         sort=sort,
         total_tasks=total_tasks,
         completed_tasks=completed_tasks,

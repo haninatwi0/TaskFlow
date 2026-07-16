@@ -1,69 +1,140 @@
 # 📋 TaskFlow
 
-TaskFlow is a modern task management web application built with **Python**, **Flask**, **SQLAlchemy**, **HTML**, and **CSS**. It helps users organize their daily tasks through a clean, responsive interface while demonstrating secure authentication and CRUD operations.
-
-## 🌐 Live Demo
-
-https://taskflow-haninatwi.onrender.com
----
-
-## ✨ Features
-
-### 🔐 User Authentication
-
-* User registration
-* Secure login and logout
-* Password hashing with Werkzeug
-* Session management
-* Email uniqueness validation
-* Strong password validation
-* Flash messages for user feedback
-
-### ✅ Task Management
-
-* Create tasks
-* View all tasks
-* Mark tasks as completed
-* Delete tasks
-* Due dates
-* Priority levels (High, Medium, Low)
-* Task statistics dashboard
-
-### 🎨 User Interface
-
-* Responsive design for desktop, tablet, and mobile
-* Black and pink custom theme
-* Professional dashboard
-* Navigation bar
-* Custom 404 and 500 error pages
+TaskFlow is a full-stack task management web application built with **Python**, **Flask**, **SQLAlchemy**, **SQLite**, **HTML**, **CSS**, and **Jinja2**. It allows users to securely manage their tasks through an intuitive dashboard with authentication, categories, priorities, progress tracking, and profile management.
 
 ---
 
-## 🛠️ Technologies Used
+# 🚀 Features
 
-### Backend
+## 👤 User Authentication
 
-* Python 3
-* Flask
-* Flask-SQLAlchemy
-* SQLite
-* Werkzeug
-
-### Frontend
-
-* HTML5
-* CSS3
-* Jinja2 Templates
-
-### Development Tools
-
-* Git
-* GitHub
-* Visual Studio Code
+- Register a new account
+- Secure login
+- Logout
+- Password hashing with Werkzeug
+- Edit profile
+- Change password
+- Delete account
+- Session management
+- Protected routes
 
 ---
 
-## 📂 Project Structure
+## ✅ Task Management
+
+- Create tasks
+- Edit tasks
+- Delete tasks
+- Mark tasks as completed
+- Due dates
+- Due date validation
+- Priority levels
+  - 🔴 High
+  - 🟡 Medium
+  - 🟢 Low
+- Task categories
+  - 📚 Study
+  - 💼 Work
+  - 🏠 Personal
+  - ❤️ Health
+  - 🛒 Shopping
+  - 🎯 Other
+- Category editing
+- Overdue task highlighting
+
+---
+
+## 📊 Dashboard
+
+- Personalized welcome message
+- Total tasks
+- Completed tasks
+- Pending tasks
+- Progress bar
+- Completion percentage
+- Due today
+- Due this week
+- High-priority tasks counter
+- Category statistics
+- Search tasks
+- Filter by:
+  - Status
+  - Priority
+  - Category
+- Sort tasks by:
+  - Newest
+  - Oldest
+  - Title
+  - Due date
+- Empty state when no tasks exist
+
+---
+
+## 👤 User Profile
+
+- View profile
+- Member since date
+- Total tasks
+- Completed tasks
+- Pending tasks
+- Completion percentage
+- Edit profile
+- Change password
+
+---
+
+## 🛡️ Validation & Security
+
+- Email validation
+- Duplicate email prevention
+- Strong password requirements
+- Password hashing
+- Due date validation
+- Category validation
+- Friendly flash messages
+- Login required for protected pages
+- Users can only edit or delete their own tasks
+
+---
+
+## 🗄️ Database
+
+- SQLite database
+- SQLAlchemy ORM
+- Flask-Migrate
+- Database migrations
+- Persistent user accounts
+
+---
+
+# 🛠️ Technologies Used
+
+## Backend
+
+- Python
+- Flask
+- SQLAlchemy
+- Flask-Migrate
+- Werkzeug
+
+## Frontend
+
+- HTML5
+- CSS3
+- Jinja2
+
+## Database
+
+- SQLite
+
+## Version Control
+
+- Git
+- GitHub
+
+---
+
+# 📁 Project Structure
 
 ```text
 TaskFlow/
@@ -71,40 +142,43 @@ TaskFlow/
 ├── app.py
 ├── requirements.txt
 ├── README.md
-├── .gitignore
 │
 ├── models/
 │   ├── user.py
 │   └── task.py
 │
-├── static/
-│   ├── css/
-│   │   └── style.css
-│   └── images/
-│
 ├── templates/
 │   ├── base.html
 │   ├── index.html
+│   ├── dashboard.html
+│   ├── profile.html
+│   ├── edit_profile.html
+│   ├── edit_task.html
 │   ├── login.html
 │   ├── register.html
-│   ├── dashboard.html
 │   ├── 404.html
 │   └── 500.html
 │
+├── static/
+│   └── style.css
+│
+├── migrations/
+│
 └── instance/
+    └── taskflow.db
 ```
 
 ---
 
-## 🚀 Installation
+# ⚙️ Installation
 
 Clone the repository:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/TaskFlow.git
+git clone https://github.com/haninatwi0/TaskFlow.git
 ```
 
-Open the project:
+Open the project folder:
 
 ```bash
 cd TaskFlow
@@ -116,21 +190,21 @@ Create a virtual environment:
 python -m venv venv
 ```
 
-Activate the virtual environment:
+Activate the virtual environment.
 
-**Windows**
+### Windows
 
 ```bash
 venv\Scripts\activate
 ```
 
-**macOS / Linux**
+### macOS / Linux
 
 ```bash
 source venv/bin/activate
 ```
 
-Install dependencies:
+Install the required packages:
 
 ```bash
 pip install -r requirements.txt
@@ -142,7 +216,7 @@ Run the application:
 python app.py
 ```
 
-Open your browser:
+Open your browser and visit:
 
 ```text
 http://127.0.0.1:5000
@@ -150,54 +224,68 @@ http://127.0.0.1:5000
 
 ---
 
-## 🔒 Security Features
+# 📸 Current Features
 
-* Passwords are securely hashed before storage.
-* Duplicate email registration is prevented.
-* Email addresses are validated.
-* Passwords must meet strength requirements.
-* Session-based authentication protects user access.
-
----
-
-## 📱 Responsive Design
-
-TaskFlow is optimized for:
-
-* 💻 Desktop
-* 📱 Mobile
-* 📲 Tablet
+- ✔ User Authentication
+- ✔ Profile Management
+- ✔ Change Password
+- ✔ Dashboard
+- ✔ Task Management
+- ✔ Categories
+- ✔ Search
+- ✔ Filters
+- ✔ Sorting
+- ✔ Progress Tracking
+- ✔ Responsive Design
+- ✔ Flask-Migrate Integration
 
 ---
 
-## 🎯 Future Improvements
+# 🚧 Future Improvements
 
-* Edit tasks
-* Search and filter tasks
-* Categories
-* Calendar view
-* User profile page
-* Email verification
-* Password reset
-* Notifications
-* PostgreSQL database
-* Dark/Light mode switch
-* Premium subscription
+- 📅 Calendar View
+- 📊 Charts & Analytics
+- 🔔 Notifications & Reminders
+- 🌙 Dark Mode
+- 📧 Email Verification
+- 🔑 Password Reset via Email
+- 📄 Export Tasks (CSV / PDF)
+- 🖼️ User Avatar
+- 🤖 AI Productivity Assistant
+- ☁️ PostgreSQL Deployment
+- 🚀 Render Production Deployment
 
 ---
 
-## 👩‍💻 Author
+# 📚 What I Learned
+
+During this project I practiced and improved my knowledge of:
+
+- Flask routing
+- SQLAlchemy ORM
+- Database migrations with Flask-Migrate
+- Authentication and session management
+- Password hashing
+- CRUD operations
+- Form validation
+- Jinja templating
+- Responsive web design
+- Git and GitHub workflow
+- Debugging and testing
+- Full-stack web application development
+
+---
+
+# 👩‍💻 Author
 
 **Hanin Atwi**
 
-Computer Science Student at FIAP
+Computer Science Student
 
-GitHub: https://github.com/haninatwi0
-
-LinkedIn: https://linkedin.com/in/haninatwi
+This project was built as a portfolio project to strengthen my full-stack web development skills using Flask and modern web technologies.
 
 ---
 
-## 📄 License
+# 📄 License
 
-This project was developed for educational purposes and portfolio demonstration.
+This project is intended for educational and portfolio purposes.

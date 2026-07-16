@@ -11,7 +11,8 @@ Edit Task
     <h2>Edit Task</h2>
 
     <form method="POST">
-        {{ form.hidden_tag() }}
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
         <label>Task Title</label>
 
         <input

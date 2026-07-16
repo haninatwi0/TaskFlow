@@ -4,6 +4,7 @@ import re
 from flask import Flask, render_template, request, redirect, session, flash 
 from flask_login import LoginManager, login_required, current_user,login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_wtf.csrf import CSRFProtect
 from models.user import db, User
 from flask_migrate import Migrate
 from sqlalchemy.exc import IntegrityError
@@ -19,8 +20,9 @@ from datetime import datetime, date
 app = Flask(__name__)
 load_dotenv()
 
-app.secret_key = os.getenv("SECRET_KEY")
 
+app.secret_key = os.getenv("SECRET_KEY")
+csrf = CSRFProtect(app)
 login_manager = LoginManager()
 
 login_manager.init_app(app)
@@ -72,10 +74,12 @@ def login():
     return render_template("login.html")
 
 @login_manager.user_loader
+@login_required
 def load_user(user_id):
     return db.session.get(User,int(user_id))
 
 @app.route("/dashboard")
+@login_required
 def dashboard():
 
     if "user_id" not in session:
@@ -253,6 +257,7 @@ def register():
 
 
 @app.route("/add-task", methods=["POST"])
+@login_required
 def add_task():
 
     if "user_id" not in session:
@@ -343,12 +348,16 @@ def add_task():
 
 
 @app.route("/complete/<int:id>")
+@login_required
 def complete_task(id):
     if "user_id" not in session:
         flash("Please login first.", "error")
         return redirect("/login")
     
-    task = Task.query.get(id)
+    task = Task.query.filter_by(
+    id=id,
+    user_id=current_user.id
+    ).first_or_404()
 
     task.completed = True
 
@@ -358,14 +367,18 @@ def complete_task(id):
 
 
 @app.route("/delete/<int:id>")
+@login_required
 def delete_task(id):
 
     if "user_id" not in session:
         flash("Please login first.", "error")
         return redirect("/login")
 
-    task = Task.query.get(id)
-
+    task = Task.query.filter_by(
+        id=id,
+        user_id=current_user.id
+    ).first_or_404()
+    
     db.session.delete(task)
 
     db.session.commit()
@@ -384,6 +397,7 @@ def logout():
     return redirect("/login")
 
 @app.route("/delete-account")
+@login_required
 def delete_account():
 
     if "user_id" not in session:
@@ -401,6 +415,7 @@ def delete_account():
     return redirect("/")
 
 @app.route("/profile")
+@login_required
 def profile():
 
     if "user_id" not in session:
@@ -438,6 +453,7 @@ def profile():
     
     
 @app.route("/edit-profile", methods=["GET", "POST"])
+@login_required
 def edit_profile():
 
     if "user_id" not in session:
@@ -519,6 +535,7 @@ def change_password():
     return render_template("change_password.html")
 
 @app.route("/edit/<int:task_id>", methods=["GET", "POST"])
+@login_required
 def edit_task(task_id):
 
     if "user_id" not in session:

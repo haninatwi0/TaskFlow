@@ -139,6 +139,8 @@ Dashboard
 
     <form action="/add-task" method="POST">
 
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
         <label for="title">Task Title</label>
 
         <input

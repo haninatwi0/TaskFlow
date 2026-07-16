@@ -238,8 +238,6 @@ def register():
             flash("Password must contain a special character.", "error")
             return redirect("/register")
 
-        password = generate_password_hash(password)
-
         new_user = User(
             name=name,
             email=email,
@@ -421,7 +419,7 @@ def profile():
         flash("Please login first.", "error")
         return redirect("/login")
 
-    user = User.query.get(session["user_id"])
+    user = current_user
 
     tasks = Task.query.filter_by(user_id=user.id).all()
 

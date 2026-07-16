@@ -2,8 +2,8 @@ from asyncio import tasks
 import email
 import re
 from flask import Flask, render_template, request, redirect, session, flash 
+from flask_login import LoginManager, login_required, current_user,login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import user
 from models.user import db, User
 from flask_migrate import Migrate
 from sqlalchemy.exc import IntegrityError
@@ -20,6 +20,12 @@ app = Flask(__name__)
 load_dotenv()
 
 app.secret_key = os.getenv("SECRET_KEY")
+
+login_manager = LoginManager()
+
+login_manager.init_app(app)
+
+login_manager.login_view = "login"
 
 # Database configuration
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///taskflow.db"
@@ -56,7 +62,7 @@ def login():
             flash("Invalid email or password.", "error")
             return redirect("/login")
 
-        session["user_id"] = user.id
+        login_user(user)
 
         flash(f"Welcome back, {user.name}!", "success")
 
@@ -65,6 +71,10 @@ def login():
 
     return render_template("login.html")
 
+@login_manager.user_loader
+def load_user(user_id):
+    return db.session.get(User,int(user_id))
+
 @app.route("/dashboard")
 def dashboard():
 
@@ -72,7 +82,7 @@ def dashboard():
         flash("Please login first.", "error")
         return redirect("/login")
 
-    user = User.query.get(session["user_id"])
+    user = current_user
 
     if not user:
         session.clear()
@@ -230,7 +240,7 @@ def register():
         new_user = User(
             name=name,
             email=email,
-            password=password
+            password=generate_password_hash(password)
         )
 
         db.session.add(new_user)
@@ -364,9 +374,10 @@ def delete_task(id):
 
 
 @app.route("/logout")
+@login_required
 def logout():
 
-    session.clear()
+    logout_user()
 
     flash("You have been logged out.", "success")
 
@@ -471,6 +482,41 @@ def edit_profile():
     )
 
 
+@app.route("/change_password", methods=["GET", "POST"])
+@login_required
+def change_password():
+
+    if request.method == "POST":
+
+        current_password = request.form["current_password"]
+        new_password = request.form["new_password"]
+        confirm_password = request.form["confirm_password"]
+
+        user = current_user
+
+        # Check old password
+        if not check_password_hash(user.password, current_password):
+            flash("Current password is incorrect", "error")
+            return redirect("/change_password")
+
+
+        # Check new password confirmation
+        if new_password != confirm_password:
+            flash("Passwords do not match", "error")
+            return redirect("/change_password")
+
+
+        # Save new password
+        user.password = generate_password_hash(new_password)
+
+        db.session.commit()
+
+        flash("Password changed successfully", "success")
+
+        return redirect("/profile")
+
+
+    return render_template("change_password.html")
 
 @app.route("/edit/<int:task_id>", methods=["GET", "POST"])
 def edit_task(task_id):

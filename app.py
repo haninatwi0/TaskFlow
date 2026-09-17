@@ -1,7 +1,7 @@
 from asyncio import tasks
 import email
 import re
-from flask import Flask, render_template, request, redirect, session, flash 
+from flask import Flask, render_template, request, redirect, session, flash , abort
 from flask_login import LoginManager, login_required, current_user,login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_wtf.csrf import CSRFProtect
@@ -51,7 +51,7 @@ def login():
 
     if request.method == "POST":
 
-        email = request.form["email"]
+        email = request.form["email"].strip()
         password = request.form["password"]
 
         user = User.query.filter_by(email=email).first()
@@ -80,11 +80,6 @@ def load_user(user_id):
 @app.route("/dashboard")
 @login_required
 def dashboard():
-
-    if "user_id" not in session:
-        flash("Please login first.", "error")
-        return redirect("/login")
-
     user = current_user
 
     if not user:
@@ -257,11 +252,6 @@ def register():
 @login_required
 def add_task():
 
-    if "user_id" not in session:
-        flash("Please login first.", "error")
-        return redirect("/login")
-
-
     title = request.form["title"].strip()
     description = request.form["description"].strip()
     priority = request.form["priority"]
@@ -330,7 +320,7 @@ def add_task():
         
         category=category,
 
-        user_id=session["user_id"]
+        user_id=current_user.id
 
     )
 
@@ -347,10 +337,7 @@ def add_task():
 @app.route("/complete/<int:id>")
 @login_required
 def complete_task(id):
-    if "user_id" not in session:
-        flash("Please login first.", "error")
-        return redirect("/login")
-    
+   
     task = Task.query.filter_by(
     id=id,
     user_id=current_user.id
@@ -366,11 +353,6 @@ def complete_task(id):
 @app.route("/delete/<int:id>")
 @login_required
 def delete_task(id):
-
-    if "user_id" not in session:
-        flash("Please login first.", "error")
-        return redirect("/login")
-
     task = Task.query.filter_by(
         id=id,
         user_id=current_user.id
@@ -397,10 +379,7 @@ def logout():
 @login_required
 def delete_account():
 
-    if "user_id" not in session:
-        return redirect("/login")
-
-    user = User.query.get(session["user_id"])
+    user = User.query.get(current_user.id)
 
     db.session.delete(user)
     db.session.commit()
@@ -414,11 +393,6 @@ def delete_account():
 @app.route("/profile")
 @login_required
 def profile():
-
-    if "user_id" not in session:
-        flash("Please login first.", "error")
-        return redirect("/login")
-
     user = current_user
 
     tasks = Task.query.filter_by(user_id=user.id).all()
@@ -457,7 +431,7 @@ def edit_profile():
         flash("Please login first.", "error")
         return redirect("/login")
 
-    user = User.query.get(session["user_id"])
+    user = User.query.get(current_user.id)
 
     if request.method == "POST":
 
@@ -534,16 +508,12 @@ def change_password():
 @app.route("/edit/<int:task_id>", methods=["GET", "POST"])
 @login_required
 def edit_task(task_id):
-
-    if "user_id" not in session:
-        return redirect("/login")
-
     task = db.session.get(Task, task_id)
 
     if task is None:
         abort(404)
 
-    if task.user_id != session["user_id"]:
+    if task.user_id != current_user.id:
         flash("You are not authorized to edit this task.", "error")
         return redirect("/dashboard")
 
